@@ -1,0 +1,2 @@
+# Estimaci-n-de-utilizando-el-M-todo-de-Monte-Carlo-Distribuido
+El objetivo de esta tarea es implementar un sistema distribuido para estimar el valor de  π  utilizando el método de Monte Carlo. El cálculo se realizará distribuyendo las tareas entre varios nodos utilizando el modelo cliente-maestro-trabajadores (master-workers) con llamadas asíncronas en el contexto de ICE (Internet Communications Engine).
