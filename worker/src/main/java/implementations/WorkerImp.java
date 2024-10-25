@@ -12,8 +12,11 @@ public class WorkerImp implements Worker {
     private MasterPrx master;
     private String workerID;
 
-    public WorkerImp(MasterPrx master, String workerID) {
+    public WorkerImp(MasterPrx master) {
         this.master = master;
+    }
+
+    public void setWorkerID(String workerID){
         this.workerID = workerID;
     }
 

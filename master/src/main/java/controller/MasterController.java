@@ -56,7 +56,7 @@ public class MasterController {
 
         for(Map.Entry<String, WorkerPrx> workerSet : availableSubWorkers.entrySet()){
             WorkerPrx currentWorkerInSet = workerSet.getValue();
-            currentWorkerInSet.throwPointToCalculatePi(amountOfPointsToThrow); //TODO: CALCULATE HOW MANY WILL BE SENT TO EACH WORKER
+            currentWorkerInSet.throwPointToCalculatePi(amountOfPointsToThrow / availableSubWorkers.size()); 
             amountOfCurrentWorkersInProgress++;
         }
     }

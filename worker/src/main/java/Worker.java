@@ -1,5 +1,6 @@
 import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.ObjectAdapter;
+import com.zeroc.Ice.ObjectPrx;
 import com.zeroc.Ice.Util;
 import Contract.MasterPrx;
 import Contract.WorkerPrx;
@@ -12,11 +13,16 @@ public class Worker {
 
             // con esto creo   el adaptador y obtener el proxy del Master
             ObjectAdapter adapter = communicator.createObjectAdapter("Worker");
-            adapter.activate();
 
-            // esto va crear el proxy para el Worker
-            WorkerPrx worker = WorkerPrx.checkedCast(communicator.stringToProxy("WorkerEndpoint"));
-            MasterPrx master = MasterPrx.checkedCast(communicator.stringToProxy("MasterEndpoint"));
+            MasterPrx master = MasterPrx.checkedCast(communicator.propertyToProxy("Master.Proxy"));
+            // aquí inicializo mi WorkerImp y le paso el MasterPrx y el workerID
+            WorkerImp workerImp = new WorkerImp(master);
+
+            ObjectPrx objectPrx = adapter.add(workerImp, Util.stringToIdentity("WorkerEndpoint"));
+            
+            WorkerPrx worker = WorkerPrx.checkedCast(objectPrx);
+
+            adapter.activate();
 
             if (master == null || worker == null) {
                 throw new Error("Proxies no válidos para Worker o Master");
@@ -25,10 +31,7 @@ public class Worker {
             // Aquí me suscribo al Master y obtengo un ID
             String workerSubscribedID = master.subToMaster(worker);
             System.out.println("Worker suscrito con ID: " + workerSubscribedID);
-
-            // aquí inicializo mi WorkerImp y le paso el MasterPrx y el workerID
-            WorkerImp workerImp = new WorkerImp(master, workerSubscribedID);
-            adapter.add(workerImp, Util.stringToIdentity("WorkerEndpoint"));
+            workerImp.setWorkerID(workerSubscribedID);
 
             // espero a que el Master me asigne una tarea de cálculo
             communicator.waitForShutdown();
