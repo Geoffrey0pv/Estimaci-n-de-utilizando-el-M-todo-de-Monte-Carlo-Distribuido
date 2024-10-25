@@ -45,7 +45,7 @@ public class Client {
                 throw new Error("Invalid proxy for Master");
             }
 
-            System.out.println("CONECTED TO MASTER");
+            //System.out.println("CONECTED TO MASTER");
 
             // Show menu while still in program
             while (true) {
