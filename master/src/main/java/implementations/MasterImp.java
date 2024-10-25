@@ -29,7 +29,7 @@ public class MasterImp implements Master {
     @Override
     public void reportFromWorkerPiWasCalculated(double amountOfpointsInsideTheCircle, String workerIdentifier,
             Current current) {
-        System.out.println("CALCULATED PI IS OVER");
+        System.out.println("Master was notified that a worker is done");
         masterController.notifyThatAWorkerIsDone(amountOfpointsInsideTheCircle, workerIdentifier);
     }
 

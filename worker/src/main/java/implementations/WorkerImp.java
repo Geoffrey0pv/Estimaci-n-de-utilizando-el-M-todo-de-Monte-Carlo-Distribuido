@@ -9,15 +9,11 @@ import Contract.Worker;
 
 public class WorkerImp implements Worker {
     
-    private MasterPrx master;
+    public static MasterPrx master;
     private String workerID;
 
     public void setWorkerID(String workerID){
         this.workerID = workerID;
-    }
-
-    public void setMasterPrx(MasterPrx masterPrx){
-        this.master = masterPrx;
     }
 
     @Override
@@ -38,18 +34,8 @@ public class WorkerImp implements Worker {
         System.out.println("bucle for terminado, enviando los datos: ");
         System.out.println("Worker " + workerID + " completó su cálculo con " + pointsInsideCircle + " puntos dentro del círculo.");
 
-        if (master != null) {  // Asegurarse de que `master` no sea nulo
-            try {
-                master.reportFromWorkerPiWasCalculated(pointsInsideCircle, workerID);
-            } catch (Exception e) {
-                System.err.println("Error al enviar datos al Master: " + e.getMessage());
-            }
-        } else {
-            System.err.println("Master proxy is null in Worker.");
-        }
-
-        master.reportFromWorkerPiWasCalculated(pointsInsideCircle, workerID);
-        
+        System.out.println("WORKER SUBSCRIBED WITH ID: " + master.toString());
+        master.reportFromWorkerPiWasCalculated(pointsInsideCircle, workerID);        
         
     }
 }

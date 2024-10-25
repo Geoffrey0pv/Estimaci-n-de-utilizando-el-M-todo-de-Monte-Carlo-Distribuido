@@ -1,7 +1,7 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import Contract.ClientPrx;
@@ -62,12 +62,13 @@ public class MasterController {
         this.amountOfPointsToThrow = amountOfPointsToThrow;
         int pointsPerWorker = amountOfPointsToThrow / availableSubWorkers.size();
         int remainingPoints = amountOfPointsToThrow % availableSubWorkers.size();
-    
-        for (Map.Entry<String, WorkerPrx> workerSet : availableSubWorkers.entrySet()) {
-            WorkerPrx currentWorkerInSet = workerSet.getValue();
+
+        ArrayList<WorkerPrx> wokers = new ArrayList<>(availableSubWorkers.values());
+
+        for (WorkerPrx worker : wokers) {
             int pointsToThrow = pointsPerWorker + (remainingPoints > 0 ? 1 : 0);
             remainingPoints--;
-            currentWorkerInSet.throwPointToCalculatePi(pointsToThrow); 
+            worker.throwPointToCalculatePi(pointsToThrow);
             amountOfCurrentWorkersInProgress++;
         }
     }

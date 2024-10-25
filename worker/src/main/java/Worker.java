@@ -21,16 +21,19 @@ public class Worker {
             ObjectPrx objectPrx = adapter.add(workerImp, Util.stringToIdentity("WorkerEndpoint"));
             WorkerPrx worker = WorkerPrx.checkedCast(objectPrx);
 
+
             adapter.activate();
 
             if (master == null || worker == null) {
                 throw new Error("Proxies no válidos para Worker o Master");
             }
 
-            workerImp.setMasterPrx(master);
-
+            
             // Aquí me suscribo al Master y obtengo un ID
             String workerSubscribedID = master.subToMaster(worker);
+
+            WorkerImp.master = master;
+            System.out.println("WORKER: " + WorkerImp.master.toString());
             System.out.println("Worker suscrito con ID: " + workerSubscribedID);
             workerImp.setWorkerID(workerSubscribedID);
 
