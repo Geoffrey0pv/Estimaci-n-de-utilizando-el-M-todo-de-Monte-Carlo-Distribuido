@@ -12,16 +12,17 @@ public class WorkerImp implements Worker {
     private MasterPrx master;
     private String workerID;
 
-    public WorkerImp(MasterPrx master) {
-        this.master = master;
-    }
-
     public void setWorkerID(String workerID){
         this.workerID = workerID;
     }
 
+    public void setMasterPrx(MasterPrx masterPrx){
+        this.master = masterPrx;
+    }
+
     @Override
     public void throwPointToCalculatePi(int amountOfPointsToThrow, Current current) {
+        System.out.println("THROWING POINT TO MAKE THE CALCULATION");
         int pointsInsideCircle = 0;
         Random random = new Random();
 
@@ -32,6 +33,7 @@ public class WorkerImp implements Worker {
                 pointsInsideCircle++;
             }
         }
+        System.out.println("bucle for terminado, enviando los datos: ");
 
         master.reportFromWorkerPiWasCalculated(pointsInsideCircle, workerID);
         System.out.println("Worker " + workerID + " completó su cálculo con " + pointsInsideCircle + " puntos dentro del círculo.");

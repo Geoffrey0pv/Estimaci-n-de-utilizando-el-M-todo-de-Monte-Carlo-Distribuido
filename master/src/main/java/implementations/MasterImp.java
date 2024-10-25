@@ -17,9 +17,11 @@ public class MasterImp implements Master {
 
     @Override
     /**
-     * This can throw illegal acces error if you try to connect another client when a client is alredy connected. 
+     * This can throw illegal acces error if you try to connect another client when
+     * a client is alredy connected.
      */
-    public void calculatePi(int amountOfPoints, ClientPrx clientPrxCaller, Current current) throws IllegalAccessError{
+    public void calculatePi(int amountOfPoints, ClientPrx clientPrxCaller, Current current) throws IllegalAccessError {
+        System.out.println("ORDER TO CALCULATE PI RECEIVED BY CLIENT");
         masterController.addClientWithCalculationInProgress(clientPrxCaller);
 
         masterController.commandWorkersToCalculatePi(amountOfPoints);
@@ -28,6 +30,7 @@ public class MasterImp implements Master {
     @Override
     public void reportFromWorkerPiWasCalculated(double amountOfpointsInsideTheCircle, String workerIdentifier,
             Current current) {
+        System.out.println("CALCULATED PI IS OVER");
         masterController.notifyThatAWorkerIsDone(amountOfpointsInsideTheCircle, workerIdentifier);
     }
 
@@ -35,7 +38,7 @@ public class MasterImp implements Master {
     public String subToMaster(WorkerPrx workerPrxCaller, Current current) {
 
         String workerSubeddNewID = masterController.subscribeNewWorker(workerPrxCaller);
-
+        System.out.println("NEW WORKER SUBSCRIBED, " + workerSubeddNewID);
         return workerSubeddNewID;
     }
 

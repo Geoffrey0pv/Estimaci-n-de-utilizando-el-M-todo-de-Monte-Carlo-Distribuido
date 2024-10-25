@@ -51,6 +51,8 @@ public class MasterController {
     }
 
     public void commandWorkersToCalculatePi(int amountOfPointsToThrow){
+        System.out.println("amount of points to throw: " + amountOfPointsToThrow);
+        System.out.println("amount of workers available: " + availableSubWorkers.size());
 
         this.amountOfPointsToThrow = amountOfPointsToThrow;
 
@@ -62,10 +64,12 @@ public class MasterController {
     }
 
     public void notifyThatAWorkerIsDone(double amountOfpointsInsideTheCircle, String workerIdentifier){
+        System.out.println("master was notified that a worker is done");
         amountOfWorkersDone++;
         this.amountOfpointsInsideTheCircle += amountOfpointsInsideTheCircle;
         //This if indicates that all workers have finished
         if(amountOfWorkersDone == amountOfCurrentWorkersInProgress){
+            System.out.println("finishig, all workers are done.");
             double piValueCalculated = calculatePiValueWithAmountPointsInsideCircle();
             clientsWithCalculationsInProgress.masterNotifiedItsDone(piValueCalculated);
             resetMasterProcessToReceiveANewOrder();

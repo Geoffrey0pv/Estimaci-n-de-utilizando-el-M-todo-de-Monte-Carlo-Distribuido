@@ -16,7 +16,7 @@ public class Worker {
 
             MasterPrx master = MasterPrx.checkedCast(communicator.propertyToProxy("Master.Proxy"));
             // aquí inicializo mi WorkerImp y le paso el MasterPrx y el workerID
-            WorkerImp workerImp = new WorkerImp(master);
+            WorkerImp workerImp = new WorkerImp();
 
             ObjectPrx objectPrx = adapter.add(workerImp, Util.stringToIdentity("WorkerEndpoint"));
             
@@ -27,6 +27,8 @@ public class Worker {
             if (master == null || worker == null) {
                 throw new Error("Proxies no válidos para Worker o Master");
             }
+
+            workerImp.setMasterPrx(master);
 
             // Aquí me suscribo al Master y obtengo un ID
             String workerSubscribedID = master.subToMaster(worker);

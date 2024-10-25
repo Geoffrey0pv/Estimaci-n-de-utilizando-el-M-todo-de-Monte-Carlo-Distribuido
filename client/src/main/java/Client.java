@@ -1,7 +1,9 @@
 import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.ObjectAdapter;
+import com.zeroc.Ice.ObjectPrx;
 import com.zeroc.Ice.Util;
 
+import Contract.ClientPrx;
 import Contract.MasterPrx;
 import implementations.ClientImp;
 
@@ -12,6 +14,7 @@ import java.io.InputStreamReader;
 public class Client {
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
     private Communicator communicator;
+    private ClientPrx myPrx;
 
     public static void main(String[] args) {
         Client client = new Client();
@@ -30,16 +33,19 @@ public class Client {
             ClientImp clientImp = new ClientImp("Client1");
 
             // Agregar la implementación al adapter
-            adapter.add(clientImp, Util.stringToIdentity("client"));
+            ObjectPrx objectPrx = adapter.add(clientImp, Util.stringToIdentity("client"));
+            this.myPrx = ClientPrx.checkedCast(objectPrx);
             adapter.activate();
 
             // Conectar con el maestro a través del proxy
             MasterPrx master = MasterPrx.checkedCast(
-                communicator.propertyToProxy("Master.Proxy"));
+                    communicator.propertyToProxy("Master.Proxy"));
 
             if (master == null) {
                 throw new Error("Invalid proxy for Master");
             }
+
+            System.out.println("CONECTED TO MASTER");
 
             // Show menu while still in program
             while (true) {
@@ -60,14 +66,14 @@ public class Client {
                         }
 
                         // Send request to master
-                        master.calculatePi(numberOfPoints, Contract.ClientPrx.uncheckedCast(
-                                adapter.createProxy(Util.stringToIdentity("client"))));
+                        master.calculatePi(numberOfPoints, myPrx);
 
-                        System.out.println("Request sent to Master to calculate Pi using " + numberOfPoints + " points...");
+                        System.out.println(
+                                "Request sent to Master to calculate Pi using " + numberOfPoints + " points...");
                         break;
 
                     case "2":
-                    
+
                         System.out.println("Exiting...");
                         return;
 
