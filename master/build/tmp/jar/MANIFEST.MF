@@ -1,6 +1,5 @@
 Manifest-Version: 1.0
 Main-Class: Master
-Class-Path: file:/C:/Users/Usuario/.gradle/caches/modules-2/files-2.1/co
- m.zeroc/ice/3.7.2/33055ec870e5bfa055ba1489b76ee83639c0a28a/ice-3.7.2.ja
- r
+Class-Path: file:/home/juanj/.gradle/caches/modules-2/files-2.1/com.zero
+ c/ice/3.7.2/33055ec870e5bfa055ba1489b76ee83639c0a28a/ice-3.7.2.jar
 

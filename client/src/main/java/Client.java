@@ -1,6 +1,8 @@
 import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.ObjectAdapter;
 import com.zeroc.Ice.Util;
+
+import Contract.MasterPrx;
 import implementations.ClientImp;
 
 import java.io.BufferedReader;
@@ -19,7 +21,7 @@ public class Client {
     public void start(String[] args) {
         try {
             // Iniciar el comunicador con la configuración del archivo .cfg
-            communicator = Util.initialize(args, "client.cfg");
+            communicator = Util.initialize(args, "properties.cfg");
 
             // Crear el adapter para el Client
             ObjectAdapter adapter = communicator.createObjectAdapter("ClientAdapter");
@@ -32,7 +34,7 @@ public class Client {
             adapter.activate();
 
             // Conectar con el maestro a través del proxy
-            Contract.MasterPrx master = Contract.MasterPrx.checkedCast(
+            MasterPrx master = MasterPrx.checkedCast(
                 communicator.propertyToProxy("Master.Proxy"));
 
             if (master == null) {
