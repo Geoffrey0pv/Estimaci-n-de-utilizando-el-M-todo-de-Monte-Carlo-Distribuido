@@ -2,6 +2,7 @@ import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.ObjectAdapter;
 import com.zeroc.Ice.ObjectPrx;
 import com.zeroc.Ice.Util;
+
 import Contract.MasterPrx;
 import Contract.WorkerPrx;
 import implementations.WorkerImp;
@@ -11,15 +12,13 @@ public class Worker {
 
         try (Communicator communicator = Util.initialize(args, "properties.cfg")) {
 
-            // con esto creo   el adaptador y obtener el proxy del Master
+            // con esto creo el adaptador y obtengo el proxy del Master
             ObjectAdapter adapter = communicator.createObjectAdapter("Worker");
-
             MasterPrx master = MasterPrx.checkedCast(communicator.propertyToProxy("Master.Proxy"));
+
             // aquí inicializo mi WorkerImp y le paso el MasterPrx y el workerID
             WorkerImp workerImp = new WorkerImp();
-
             ObjectPrx objectPrx = adapter.add(workerImp, Util.stringToIdentity("WorkerEndpoint"));
-            
             WorkerPrx worker = WorkerPrx.checkedCast(objectPrx);
 
             adapter.activate();

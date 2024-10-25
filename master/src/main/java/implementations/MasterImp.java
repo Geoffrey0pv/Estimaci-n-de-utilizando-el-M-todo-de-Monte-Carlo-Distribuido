@@ -23,7 +23,6 @@ public class MasterImp implements Master {
     public void calculatePi(int amountOfPoints, ClientPrx clientPrxCaller, Current current) throws IllegalAccessError {
         System.out.println("ORDER TO CALCULATE PI RECEIVED BY CLIENT");
         masterController.addClientWithCalculationInProgress(clientPrxCaller);
-
         masterController.commandWorkersToCalculatePi(amountOfPoints);
     }
 
@@ -36,10 +35,14 @@ public class MasterImp implements Master {
 
     @Override
     public String subToMaster(WorkerPrx workerPrxCaller, Current current) {
-
+        if (workerPrxCaller == null) {
+            System.err.println("Worker proxy is null.");
+            return "";
+        }
         String workerSubeddNewID = masterController.subscribeNewWorker(workerPrxCaller);
         System.out.println("NEW WORKER SUBSCRIBED, " + workerSubeddNewID);
         return workerSubeddNewID;
     }
+
 
 }

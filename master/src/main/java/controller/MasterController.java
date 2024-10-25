@@ -50,31 +50,48 @@ public class MasterController {
         return "";
     }
 
-    public void commandWorkersToCalculatePi(int amountOfPointsToThrow){
-        System.out.println("amount of points to throw: " + amountOfPointsToThrow);
-        System.out.println("amount of workers available: " + availableSubWorkers.size());
-
+    public void commandWorkersToCalculatePi(int amountOfPointsToThrow) {
+        System.out.println("Amount of points to throw: " + amountOfPointsToThrow);
+        System.out.println("Amount of workers available: " + availableSubWorkers.size());
+    
+        if (availableSubWorkers.isEmpty()) {
+            System.out.println("No workers available.");
+            return;
+        }
+    
         this.amountOfPointsToThrow = amountOfPointsToThrow;
-
-        for(Map.Entry<String, WorkerPrx> workerSet : availableSubWorkers.entrySet()){
+        int pointsPerWorker = amountOfPointsToThrow / availableSubWorkers.size();
+        int remainingPoints = amountOfPointsToThrow % availableSubWorkers.size();
+    
+        for (Map.Entry<String, WorkerPrx> workerSet : availableSubWorkers.entrySet()) {
             WorkerPrx currentWorkerInSet = workerSet.getValue();
-            currentWorkerInSet.throwPointToCalculatePi(amountOfPointsToThrow / availableSubWorkers.size()); 
+            int pointsToThrow = pointsPerWorker + (remainingPoints > 0 ? 1 : 0);
+            remainingPoints--;
+            currentWorkerInSet.throwPointToCalculatePi(pointsToThrow); 
             amountOfCurrentWorkersInProgress++;
         }
     }
+    
 
-    public void notifyThatAWorkerIsDone(double amountOfpointsInsideTheCircle, String workerIdentifier){
-        System.out.println("master was notified that a worker is done");
+    public void notifyThatAWorkerIsDone(double amountOfpointsInsideTheCircle, String workerIdentifier) {
+        System.out.println("Master was notified that a worker is done");
         amountOfWorkersDone++;
         this.amountOfpointsInsideTheCircle += amountOfpointsInsideTheCircle;
-        //This if indicates that all workers have finished
-        if(amountOfWorkersDone == amountOfCurrentWorkersInProgress){
-            System.out.println("finishig, all workers are done.");
+    
+        if (amountOfWorkersDone == amountOfCurrentWorkersInProgress) {
+            System.out.println("Finishing, all workers are done.");
             double piValueCalculated = calculatePiValueWithAmountPointsInsideCircle();
-            clientsWithCalculationsInProgress.masterNotifiedItsDone(piValueCalculated);
+    
+            if (clientsWithCalculationsInProgress != null) {
+                clientsWithCalculationsInProgress.masterNotifiedItsDone(piValueCalculated);
+            } else {
+                System.out.println("No client connected to notify.");
+            }
+    
             resetMasterProcessToReceiveANewOrder();
         }
     }
+    
     /**
      * If a task is finished and the client was notified of the result, it should be open to receive another client request.
      */
@@ -84,6 +101,8 @@ public class MasterController {
         clientsWithCalculationsInProgress = null;   
         amountOfpointsInsideTheCircle = 0;
         amountOfPointsToThrow = 0;
+        System.out.println("Master reset and ready for new calculations.");
+
     }
 
     private double calculatePiValueWithAmountPointsInsideCircle(){

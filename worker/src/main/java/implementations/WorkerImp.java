@@ -26,6 +26,8 @@ public class WorkerImp implements Worker {
         int pointsInsideCircle = 0;
         Random random = new Random();
 
+        System.out.println("Worker " + workerID + " comenzando cálculo con " + amountOfPointsToThrow + " puntos.");
+
         for (int i = 0; i < amountOfPointsToThrow; i++) {
             double x = random.nextDouble() * 2 - 1; 
             double y = random.nextDouble() * 2 - 1; 
@@ -34,8 +36,20 @@ public class WorkerImp implements Worker {
             }
         }
         System.out.println("bucle for terminado, enviando los datos: ");
+        System.out.println("Worker " + workerID + " completó su cálculo con " + pointsInsideCircle + " puntos dentro del círculo.");
+
+        if (master != null) {  // Asegurarse de que `master` no sea nulo
+            try {
+                master.reportFromWorkerPiWasCalculated(pointsInsideCircle, workerID);
+            } catch (Exception e) {
+                System.err.println("Error al enviar datos al Master: " + e.getMessage());
+            }
+        } else {
+            System.err.println("Master proxy is null in Worker.");
+        }
 
         master.reportFromWorkerPiWasCalculated(pointsInsideCircle, workerID);
-        System.out.println("Worker " + workerID + " completó su cálculo con " + pointsInsideCircle + " puntos dentro del círculo.");
+        
+        
     }
 }
