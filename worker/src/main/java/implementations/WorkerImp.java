@@ -9,7 +9,6 @@ import Contract.Worker;
 
 public class WorkerImp implements Worker {
     
-    public static MasterPrx master;
     private String workerID;
 
     public void setWorkerID(String workerID){
@@ -19,6 +18,8 @@ public class WorkerImp implements Worker {
     @Override
     public void throwPointToCalculatePi(int amountOfPointsToThrow, Current current) {
         System.out.println("THROWING POINT TO MAKE THE CALCULATION");
+        Worker.master.test("estamos probando desde el pi worker desde el inciio del metodo");
+
         int pointsInsideCircle = 0;
         Random random = new Random();
 
@@ -34,8 +35,9 @@ public class WorkerImp implements Worker {
         System.out.println("bucle for terminado, enviando los datos: ");
         System.out.println("Worker " + workerID + " completó su cálculo con " + pointsInsideCircle + " puntos dentro del círculo.");
 
-        System.out.println("WORKER SUBSCRIBED WITH ID: " + master.toString());
-        master.reportFromWorkerPiWasCalculated(pointsInsideCircle, workerID);        
+        System.out.println("WORKER SUBSCRIBED WITH ID: " + Worker.master.toString());
+        Worker.master.test("estamos probando desde el pi worker");
+        Worker.master.reportFromWorkerPiWasCalculated(pointsInsideCircle, workerID);        
         
     }
 }

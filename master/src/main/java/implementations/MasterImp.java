@@ -44,5 +44,10 @@ public class MasterImp implements Master {
         return workerSubeddNewID;
     }
 
+    @Override
+    public void test(String s, Current current) {
+        System.out.println(s);
+    }
+
 
 }

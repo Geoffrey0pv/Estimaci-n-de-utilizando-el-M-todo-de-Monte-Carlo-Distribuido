@@ -8,13 +8,16 @@ import Contract.WorkerPrx;
 import implementations.WorkerImp;
 
 public class Worker {
+
+    public static MasterPrx master;
+    
     public static void main(String[] args) {
 
         try (Communicator communicator = Util.initialize(args, "properties.cfg")) {
 
             // con esto creo el adaptador y obtengo el proxy del Master
             ObjectAdapter adapter = communicator.createObjectAdapter("Worker");
-            MasterPrx master = MasterPrx.checkedCast(communicator.propertyToProxy("Master.Proxy"));
+            master = MasterPrx.checkedCast(communicator.propertyToProxy("Master.Proxy"));
 
             // aquí inicializo mi WorkerImp y le paso el MasterPrx y el workerID
             WorkerImp workerImp = new WorkerImp();
@@ -31,9 +34,9 @@ public class Worker {
             
             // Aquí me suscribo al Master y obtengo un ID
             String workerSubscribedID = master.subToMaster(worker);
+            master.test("estamos probando desde el pi worker desde el main");
 
-            WorkerImp.master = master;
-            System.out.println("WORKER: " + WorkerImp.master.toString());
+            System.out.println("WORKER: " + master.toString());
             System.out.println("Worker suscrito con ID: " + workerSubscribedID);
             workerImp.setWorkerID(workerSubscribedID);
 
