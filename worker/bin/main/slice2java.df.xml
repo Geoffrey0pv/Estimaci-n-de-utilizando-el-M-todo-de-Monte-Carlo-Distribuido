@@ -1,18 +1,18 @@
 <state>
-  <timestamp value='1729568224272' />
+  <timestamp value='1729822276205' />
   <sourceSet name='default'>
-    <source name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\Myapp.ice'>
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\Client.java' />
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\Worker.java' />
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\Master.java' />
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\ClientPrx.java' />
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\_ClientPrxI.java' />
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\WorkerPrx.java' />
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\_WorkerPrxI.java' />
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\MasterPrx.java' />
-      <file name='C:\Users\geoff\Desktop\Tarea compunet2\Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido\worker\build\generated-src\Contract\_MasterPrxI.java' />
+    <source name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/Myapp.ice'>
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/Client.java' />
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/Worker.java' />
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/Master.java' />
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/ClientPrx.java' />
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/_ClientPrxI.java' />
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/WorkerPrx.java' />
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/_WorkerPrxI.java' />
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/MasterPrx.java' />
+      <file name='/home/juanj/Desktop/Universidad/ComputacionI/Estimacion-de-PI-utilizando-el-Metodo-de-MonteCarlo-Distribuido/worker/build/generated-src/Contract/_MasterPrxI.java' />
     </source>
-    <arg value='C:\Program Files\ZeroC\Ice-3.7.10\\bin\slice2java.exe' />
-    <arg value='-IC:\Program Files\ZeroC\Ice-3.7.10\\slice' />
+    <arg value='/usr/bin/slice2java' />
+    <arg value='-I/usr/share/ice/slice' />
   </sourceSet>
 </state>
