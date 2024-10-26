@@ -72,7 +72,9 @@ public class MasterController {
     public void notifyThatAWorkerIsDone(double amountOfpointsInsideTheCircle, String workerIdentifier) {
         amountOfWorkersDone.incrementAndGet();
         this.amountOfpointsInsideTheCircle.add(amountOfpointsInsideTheCircle);
-        if (amountOfWorkersDone.get() == amountOfCurrentWorkersInProgress.get()) {
+        System.out.println("amount of workers done: " + amountOfWorkersDone.get());
+        System.out.println("amount of current workers in progress: " + amountOfCurrentWorkersInProgress.get());
+        if (amountOfWorkersDone.get() == availableSubWorkers.size()) {
             System.out.println("Finishing, all workers are done.");
             double piValueCalculated = calculatePiValueWithAmountPointsInsideCircle();
 
