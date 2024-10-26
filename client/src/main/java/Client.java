@@ -23,21 +23,21 @@ public class Client {
 
     public void start(String[] args) {
         try {
-            // Iniciar el comunicador con la configuración del archivo .cfg
+            // Initialize comunicator with properties.cfg configuration 
             communicator = Util.initialize(args, "properties.cfg");
 
-            // Crear el adapter para el Client
+            // Create adapter object for client 
             ObjectAdapter adapter = communicator.createObjectAdapter("ClientAdapter");
 
-            // Crear la implementación del cliente
+            // Create an instance of the client implementation
             ClientImp clientImp = new ClientImp("Client1");
 
-            // Agregar la implementación al adapter
+            // Add instance of the client implementation to the adapter 
             ObjectPrx objectPrx = adapter.add(clientImp, Util.stringToIdentity("client"));
             this.myPrx = ClientPrx.checkedCast(objectPrx);
             adapter.activate();
 
-            // Conectar con el maestro a través del proxy
+            // Connect with master through its proxy
             MasterPrx master = MasterPrx.checkedCast(
                     communicator.propertyToProxy("Master.Proxy"));
 
