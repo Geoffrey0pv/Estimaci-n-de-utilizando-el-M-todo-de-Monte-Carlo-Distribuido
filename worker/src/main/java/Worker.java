@@ -32,7 +32,7 @@ public class Worker {
 
             // Aquí me suscribo al Master y obtengo un ID
             controller.subToMaster(worker);
-            master.test("estamos probando desde el pi worker desde el main");
+            System.out.println("WORKER SUBSCRIBED");
 
             // espero a que el Master me asigne una tarea de cálculo
             communicator.waitForShutdown();

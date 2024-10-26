@@ -30,7 +30,7 @@ public class Client {
             ObjectAdapter adapter = communicator.createObjectAdapter("ClientAdapter");
 
             // Create an instance of the client implementation
-            ClientImp clientImp = new ClientImp("Client1");
+            ClientImp clientImp = new ClientImp();
 
             // Add instance of the client implementation to the adapter 
             ObjectPrx objectPrx = adapter.add(clientImp, Util.stringToIdentity("client"));

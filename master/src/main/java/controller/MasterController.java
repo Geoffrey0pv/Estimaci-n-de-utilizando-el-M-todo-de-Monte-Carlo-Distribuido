@@ -3,46 +3,41 @@ package controller;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.DoubleAdder;
 
 import Contract.ClientPrx;
 import Contract.WorkerPrx;
 
 public class MasterController {
     private ClientPrx clientsWithCalculationsInProgress;
-    // This hashmaps holds all the workers that are subscribed to this master
     private HashMap<String, WorkerPrx> availableSubWorkers;
 
-    private int amountOfCurrentWorkersInProgress;
-    private int amountOfWorkersDone;
-    private double amountOfpointsInsideTheCircle;
+    // Variables concurrentes
+    //Se vio necesario utilizar estos tipos de datos debido a que varios workers, pueden notificar que ya terminaron a la vez. 
+    //Entonces necesitamos un buen control de concurrencia para esto.
+    private AtomicInteger amountOfCurrentWorkersInProgress;
+    private AtomicInteger amountOfWorkersDone;
+    private DoubleAdder amountOfpointsInsideTheCircle;
     private int amountOfPointsToThrow;
 
     public MasterController() {
         this.availableSubWorkers = new HashMap<>();
-        this.amountOfCurrentWorkersInProgress = 0;
-        this.amountOfWorkersDone = 0;
+        this.amountOfCurrentWorkersInProgress = new AtomicInteger(0);
+        this.amountOfWorkersDone = new AtomicInteger(0);
+        this.amountOfpointsInsideTheCircle = new DoubleAdder();
     }
 
-    /**
-     * 
-     * @param client this is the client that started a process
-     */
     public void addClientWithCalculationInProgress(ClientPrx client) throws IllegalAccessError {
         if (this.clientsWithCalculationsInProgress != null) {
-            throw new IllegalAccessError("There is alredy a client connected");
+            throw new IllegalAccessError("There is already a client connected");
         }
+        System.out.println("CLIENT CONNECTED");
         this.clientsWithCalculationsInProgress = client;
     }
 
-    /**
-     * 
-     * @param newWorker New worker to be added
-     * @return a string, indicating the id that that worker got assigned by the
-     *         master
-     */
     public String subscribeNewWorker(WorkerPrx newWorker) {
         String newWorkerID = UUID.randomUUID().toString();
-
         WorkerPrx previousWorkerInHashMap = availableSubWorkers.put(newWorkerID, newWorker);
 
         if (previousWorkerInHashMap == null) {
@@ -53,8 +48,6 @@ public class MasterController {
 
     public void commandWorkersToCalculatePi(int amountOfPointsToThrow) {
         new Thread(() -> {
-            System.out.println("Amount of points to throw: " + amountOfPointsToThrow);
-            System.out.println("Amount of workers available: " + availableSubWorkers.size());
 
             if (availableSubWorkers.isEmpty()) {
                 System.out.println("No workers available.");
@@ -65,22 +58,21 @@ public class MasterController {
             int pointsPerWorker = amountOfPointsToThrow / availableSubWorkers.size();
             int remainingPoints = amountOfPointsToThrow % availableSubWorkers.size();
 
-            ArrayList<WorkerPrx> wokers = new ArrayList<>(availableSubWorkers.values());
+            ArrayList<WorkerPrx> workers = new ArrayList<>(availableSubWorkers.values());
 
-            for (WorkerPrx worker : wokers) {
+            for (WorkerPrx worker : workers) {
                 int pointsToThrow = pointsPerWorker + (remainingPoints > 0 ? 1 : 0);
                 remainingPoints--;
+                amountOfCurrentWorkersInProgress.incrementAndGet();
                 worker.throwPointToCalculatePi(pointsToThrow);
-                amountOfCurrentWorkersInProgress++;
             }
         }).start();
     }
 
     public void notifyThatAWorkerIsDone(double amountOfpointsInsideTheCircle, String workerIdentifier) {
-        amountOfWorkersDone++;
-        this.amountOfpointsInsideTheCircle += amountOfpointsInsideTheCircle;
-
-        if (amountOfWorkersDone == amountOfCurrentWorkersInProgress) {
+        amountOfWorkersDone.incrementAndGet();
+        this.amountOfpointsInsideTheCircle.add(amountOfpointsInsideTheCircle);
+        if (amountOfWorkersDone.get() == amountOfCurrentWorkersInProgress.get()) {
             System.out.println("Finishing, all workers are done.");
             double piValueCalculated = calculatePiValueWithAmountPointsInsideCircle();
 
@@ -94,21 +86,17 @@ public class MasterController {
         }
     }
 
-    /**
-     * If a task is finished and the client was notified of the result, it should be
-     * open to receive another client request.
-     */
     private void resetMasterProcessToReceiveANewOrder() {
-        amountOfCurrentWorkersInProgress = 0;
-        amountOfWorkersDone = 0;
+        amountOfCurrentWorkersInProgress.set(0);
+        amountOfWorkersDone.set(0);
         clientsWithCalculationsInProgress = null;
-        amountOfpointsInsideTheCircle = 0;
+        amountOfpointsInsideTheCircle.reset();
         amountOfPointsToThrow = 0;
         System.out.println("Master reset and ready for new calculations.");
-
     }
 
     private double calculatePiValueWithAmountPointsInsideCircle() {
-        return 4 * (amountOfpointsInsideTheCircle / amountOfPointsToThrow);
+        return 4 * (amountOfpointsInsideTheCircle.sum() / amountOfPointsToThrow);
     }
 }
+

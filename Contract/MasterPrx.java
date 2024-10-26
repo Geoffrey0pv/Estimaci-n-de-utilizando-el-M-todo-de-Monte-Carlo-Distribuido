@@ -133,42 +133,6 @@ public interface MasterPrx extends com.zeroc.Ice.ObjectPrx
         return f;
     }
 
-    default void test(String s)
-    {
-        test(s, com.zeroc.Ice.ObjectPrx.noExplicitContext);
-    }
-
-    default void test(String s, java.util.Map<String, String> context)
-    {
-        _iceI_testAsync(s, context, true).waitForResponse();
-    }
-
-    default java.util.concurrent.CompletableFuture<Void> testAsync(String s)
-    {
-        return _iceI_testAsync(s, com.zeroc.Ice.ObjectPrx.noExplicitContext, false);
-    }
-
-    default java.util.concurrent.CompletableFuture<Void> testAsync(String s, java.util.Map<String, String> context)
-    {
-        return _iceI_testAsync(s, context, false);
-    }
-
-    /**
-     * @hidden
-     * @param iceP_s -
-     * @param context -
-     * @param sync -
-     * @return -
-     **/
-    default com.zeroc.IceInternal.OutgoingAsync<Void> _iceI_testAsync(String iceP_s, java.util.Map<String, String> context, boolean sync)
-    {
-        com.zeroc.IceInternal.OutgoingAsync<Void> f = new com.zeroc.IceInternal.OutgoingAsync<>(this, "test", null, sync, null);
-        f.invoke(false, context, null, ostr -> {
-                     ostr.writeString(iceP_s);
-                 }, null);
-        return f;
-    }
-
     /**
      * Contacts the remote server to verify that the object implements this type.
      * Raises a local exception if a communication error occurs.

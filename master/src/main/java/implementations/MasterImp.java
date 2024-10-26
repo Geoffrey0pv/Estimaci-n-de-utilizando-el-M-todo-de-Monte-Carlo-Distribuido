@@ -40,13 +40,8 @@ public class MasterImp implements Master {
             return "";
         }
         String workerSubeddNewID = masterController.subscribeNewWorker(workerPrxCaller);
-        System.out.println("NEW WORKER SUBSCRIBED, " + workerSubeddNewID);
+        System.out.println("NEW WORKER SUBSCRIBED: " + workerSubeddNewID);
         return workerSubeddNewID;
-    }
-
-    @Override
-    public void test(String s, Current current) {
-        System.out.println(s);
     }
 
 
