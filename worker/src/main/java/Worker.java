@@ -5,25 +5,24 @@ import com.zeroc.Ice.Util;
 
 import Contract.MasterPrx;
 import Contract.WorkerPrx;
+import implementations.WorkerController;
 import implementations.WorkerImp;
 
 public class Worker {
 
-    public static MasterPrx master;
-    
     public static void main(String[] args) {
 
         try (Communicator communicator = Util.initialize(args, "properties.cfg")) {
-
             // con esto creo el adaptador y obtengo el proxy del Master
             ObjectAdapter adapter = communicator.createObjectAdapter("Worker");
-            master = MasterPrx.checkedCast(communicator.propertyToProxy("Master.Proxy"));
+            MasterPrx master = MasterPrx.checkedCast(communicator.propertyToProxy("Master.Proxy"));
+
+            WorkerController controller = new WorkerController(master);
+            WorkerImp workerImp = new WorkerImp(controller);
 
             // aquí inicializo mi WorkerImp y le paso el MasterPrx y el workerID
-            WorkerImp workerImp = new WorkerImp();
             ObjectPrx objectPrx = adapter.add(workerImp, Util.stringToIdentity("WorkerEndpoint"));
             WorkerPrx worker = WorkerPrx.checkedCast(objectPrx);
-
 
             adapter.activate();
 
@@ -31,14 +30,9 @@ public class Worker {
                 throw new Error("Proxies no válidos para Worker o Master");
             }
 
-            
             // Aquí me suscribo al Master y obtengo un ID
-            String workerSubscribedID = master.subToMaster(worker);
+            controller.subToMaster(worker);
             master.test("estamos probando desde el pi worker desde el main");
-
-            System.out.println("WORKER: " + master.toString());
-            System.out.println("Worker suscrito con ID: " + workerSubscribedID);
-            workerImp.setWorkerID(workerSubscribedID);
 
             // espero a que el Master me asigne una tarea de cálculo
             communicator.waitForShutdown();
